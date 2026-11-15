@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d78eaa">
+<meta name="description" content="يومي - مساحة لطيفة لتنظيم مهامك وعاداتك وأفكارك">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>يومي – YAWMI</title>
+<style>
+:root{--bg:#fff5f7;--card:#fff;--ink:#594653;--muted:#a58e9b;--pink:#d78eaa;--pink2:#bd7897;--soft:#fbe8ef;--line:#f3e2e9;--lav:#c9b4dc;--green:#88bda6;--shadow:0 7px 24px #9e6c8012}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:850px;margin:auto;padding:18px 16px 95px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.brand{display:flex;gap:10px;align-items:center}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#e9b5c8,#c9b4dc);display:grid;place-items:center;color:white;font-size:24px}
+h1{font-size:20px;margin:0}header small,.muted{color:var(--muted);font-size:12px}
+.icon{border:1px solid var(--line);background:white;color:var(--ink);border-radius:12px;padding:9px}
+.welcome{background:linear-gradient(120deg,#d88fab,#e8b6ca 58%,#c9b4dc);color:white;padding:22px;border-radius:22px;box-shadow:0 9px 22px #d78eaa30}
+.welcome h2{margin:8px 0;font-size:23px}.welcome p{margin:0;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.stat{text-align:center}.stat strong{display:block;font-size:22px;color:var(--pink2)}.stat span{font-size:11px;color:var(--muted)}
+.head{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px}.head h3{margin:0;font-size:16px}
+.btn{border:0;border-radius:12px;padding:10px 14px;background:var(--pink);color:white;font-weight:700;font-size:12px}
+.btn.soft{background:var(--soft);color:var(--pink2)}.btn.danger{background:#fff0f1;color:#c56b7b}
+.progress{height:9px;background:var(--soft);border-radius:20px;overflow:hidden;margin:12px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--lav))}
+.row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.row input[type=checkbox]{accent-color:var(--pink);width:20px;height:20px}.item{flex:1;min-width:0}.item b{font-size:13px;display:block}.item small{font-size:11px;color:var(--muted)}
+.done b{text-decoration:line-through;color:var(--muted)}.tag{background:var(--soft);color:var(--pink2);border-radius:20px;padding:4px 8px;font-size:10px}
+.empty{text-align:center;color:var(--muted);padding:22px 8px;font-size:12px}
+.field{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);margin:6px 0 12px}
+label{font-size:12px;color:var(--muted)}textarea{resize:vertical}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:4}
+nav button{border:0;background:none;color:var(--muted);font-size:10px;display:flex;flex-direction:column;gap:3px;align-items:center;padding:4px}
+nav button span{font-size:19px}nav button.active{color:var(--pink2);font-weight:800}
+.modalback{display:none;position:fixed;inset:0;background:#39263366;z-index:10;align-items:center;justify-content:center;padding:14px}.modalback.show{display:flex}
+.modal{background:white;border-radius:20px;padding:18px;width:min(100%,460px);max-height:90vh;overflow:auto}.modal h3{margin:0 0 14px}
+.modalfoot{display:flex;gap:8px}.modalfoot button{flex:1}
+.actions{display:flex;gap:7px}.actions button{border:0;background:var(--soft);color:var(--pink2);border-radius:9px;padding:6px 9px}
+.night{--bg:#211c29;--card:#302738;--ink:#f4eaf0;--muted:#b6a4b4;--line:#49394a;--soft:#473343;--shadow:0 7px 24px #0002}.night nav,.night .modal,.night .icon{background:var(--card);color:var(--ink)}.night .field{background:#261f2d}
+@media(min-width:680px){.app{padding:24px 26px 100px}.columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<header><div class="brand"><div class="logo">✿</div><div><h1>يومي</h1><small>مساحتك الصغيرة لحياة أجمل</small></div></div><div><button class="icon" id="install" hidden>⬇ تثبيت</button> <button class="icon" id="theme">☾</button></div></header>
+<main id="view"></main>
+</div>
+<nav>
+<button class="active" data-tab="home"><span>⌂</span>الرئيسية</button>
+<button data-tab="tasks"><span>☷</span>المهام</button>
+<button data-tab="habits"><span>♡</span>العادات</button>
+<button data-tab="rewards"><span>☆</span>المكافآت</button>
+<button data-tab="notes"><span>☁</span>أفكاري</button>
+</nav>
+<div class="modalback" id="back"><div class="modal" id="modal"></div></div>
+<script>
+const $=s=>document.querySelector(s), today=()=>new Date().toLocaleDateString('en-CA');
+const blank=()=>({tasks:[],habits:[],notes:[],rewards:[],points:0,dark:false});
+let db;try{db=JSON.parse(localStorage.getItem('yawmi_data'))||blank()}catch{db=blank()}
+let tab='home',filter='all',installPrompt=null;
+const save=()=>localStorage.setItem('yawmi_data',JSON.stringify(db));
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dateLabel=d=>d?new Date(d+'T12:00:00').toLocaleDateString('ar-DZ',{day:'numeric',month:'short'}):'بدون تاريخ';
+const tasksToday=()=>db.tasks.filter(t=>t.date===today());
+const doneToday=()=>tasksToday().filter(t=>t.done).length;
+const percent=()=>tasksToday().length?Math.round(doneToday()/tasksToday().length*100):0;
+function taskRow(t){return `<div class="row ${t.done?'done':''}"><input type="checkbox" data-check-task="${t.id}" ${t.done?'checked':''}><div class="item"><b>${esc(t.title)}</b><small>${dateLabel(t.date)} · ${esc(t.category||'شخصي')}</small></div><span class="tag">${esc(t.priority||'عادي')}</span><div class="actions"><button data-edit-task="${t.id}">⋯</button></div></div>`}
+function habitRow(h){let ok=(h.logs||[]).includes(today());return `<div class="row"><input type="checkbox" data-check-habit="${h.id}" ${ok?'checked':''}><div class="item"><b>${esc(h.title)}</b><small>${(h.logs||[]).length} إنجاز</small></div><span class="tag">${ok?'أُنجزت':'عادة اليوم'}</span></div>`}
+function noteRow(n){return `<div class="row"><div class="item"><b>${esc(n.title||'فكرة بدون عنوان')}</b><small>${esc(n.category||'عام')} · ${dateLabel(n.date)}</small><small>${esc(n.body).slice(0,90)}</small></div><div class="actions"><button data-edit-note="${n.id}">⋯</button></div></div>`}
+function render(){
+document.body.classList.toggle('night',db.dark);
+let v='';
+if(tab==='home')v=`<section class="welcome"><small>${new Date().toLocaleDateString('ar-DZ',{weekday:'long',day:'numeric',month:'long'})}</small><h2>أهلاً بكِ في يومكِ الجميل 🌷</h2><p>خطوة صغيرة اليوم تصنع فرقاً كبيراً غداً.</p></section>
+<div class="stats"><div class="stat"><strong>${percent()}%</strong><span>إنجاز اليوم</span></div><div class="stat"><strong>${db.points}</strong><span>نقاطكِ</span></div><div class="stat"><strong>${db.habits.filter(h=>(h.logs||[]).includes(today())).length}/${db.habits.length}</strong><span>عادات مكتملة</span></div></div>
+<div class="panel"><b>🌸 تقدمكِ اليوم</b><div class="progress"><i style="width:${percent()}%"></i></div><small class="muted">${doneToday()} من ${tasksToday().length} مهام مكتملة</small></div>
+<div class="columns"><section><div class="head"><h3>مهام اليوم</h3><button class="btn soft" data-add="task">＋ إضافة</button></div><div class="panel">${tasksToday().length?tasksToday().map(taskRow).join(''):'<div class="empty">لا توجد مهام بعد. ابدئي بخطوة صغيرة!</div>'}</div></section>
+<section><div class="head"><h3>عاداتي</h3><button class="btn soft" data-add="habit">＋ إضافة</button></div><div class="panel">${db.habits.length?db.habits.map(habitRow).join(''):'<div class="empty">أضيفي عادة تحبين الالتزام بها.</div>'}</div></section></div>`;
+if(tab==='tasks')v=`<div class="head"><h3>☷ قائمة مهامي</h3><button class="btn" data-add="task">＋ مهمة جديدة</button></div><div class="panel">${db.tasks.length?db.tasks.map(taskRow).join(''):'<div class="empty">لا توجد مهام. أضيفي أول مهمة!</div>'}</div>`;
+if(tab==='habits')v=`<div class="head"><h3>♡ عاداتي الجميلة</h3><button class="btn" data-add="habit">＋ عادة</button></div><div class="panel">${db.habits.length?db.habits.map(habitRow).join(''):'<div class="empty">ابدئي بعادة واحدة صغيرة اليوم.</div>'}</div>`;
+if(tab==='notes')v=`<div class="welcome"><small>مساحة آمنة لأفكاركِ</small><h2>☁️ أفرغي ما في ذهنكِ</h2><p>اكتبي بحرية، لا تحتاج أفكاركِ إلى ترتيب الآن.</p></div><div class="head"><h3>دفتر أفكاري</h3><button class="btn" data-add="note">＋ فكرة جديدة</button></div><div class="panel">${db.notes.length?db.notes.slice().reverse().map(noteRow).join(''):'<div class="empty">هذه المساحة لكِ. اكتبي أول فكرة تخطر ببالكِ.</div>'}</div>`;
+if(tab==='rewards')v=`<section class="welcome"><small>رصيدكِ الحالي</small><h2>☆ ${db.points} نقطة</h2><p>كل خطوة إيجابية تقرّبكِ من مكافأتكِ.</p></section><div class="head"><h3>مكافآتي الشخصية</h3><button class="btn" data-add="reward">＋ مكافأة</button></div><div class="panel">${db.rewards.length?db.rewards.map(r=>`<div class="row"><div class="item"><b>${esc(r.title)}</b><small>${r.cost} نقطة</small></div><button class="btn soft" data-redeem="${r.id}" ${db.points<r.cost?'disabled':''}>استبدال</button></div>`).join(''):'<div class="empty">أضيفي مكافأة تحفّزكِ على الإنجاز.</div>'}</div>`;
+$('#view').innerHTML=v;
+document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+}
+function openForm(type,item={}){
+let title={task:'مهمة جديدة ✨',habit:'عادة جديدة 🌱',note:'تفريغ الأفكار ☁️',reward:'مكافأة جديدة ☆'}[type];
+let fields= type==='task'?`<label>اسم المهمة</label><input class="field" name="title" required value="${esc(item.title)}" placeholder="مثلاً: قراءة 10 صفحات"><label>التاريخ</label><input class="field" name="date" type="date" value="${item.date||today()}"><label>الوقت</label><input class="field" name="time" type="time" value="${item.time||''}"><label>التصنيف</label><select class="field" name="category"><option>شخصي</option><option>عمل</option><option>دراسة</option><option>منزل</option><option>صحة</option></select><label>الأولوية</label><select class="field" name="priority"><option>عادي</option><option>مهم</option><option>عاجل</option></select>`:
+type==='habit'?`<label>اسم العادة</label><input class="field" name="title" required value="${esc(item.title)}" placeholder="مثلاً: شرب الماء">`:
+type==='note'?`<label>عنوان الفكرة</label><input class="field" name="title" value="${esc(item.title)}" placeholder="عنوان اختياري"><label>التصنيف</label><select class="field" name="category"><option>عام</option><option>أفكار</option><option>مشاعر</option><option>خطط</option><option>امتنان</option></select><label>اكتبي بحرية...</label><textarea class="field" name="body" rows="6" required>${esc(item.body)}</textarea>`:
+`<label>المكافأة التي تحبينها</label><input class="field" name="title" required value="${esc(item.title)}" placeholder="ساعة استرخاء"><label>النقاط المطلوبة</label><input class="field" name="cost" type="number" min="1" required value="${item.cost||50}">`;
+$('#modal').innerHTML=`<h3>${title}</h3><form id="entry">${fields}<div class="modalfoot"><button class="btn">حفظ</button><button class="btn soft" type="button" id="cancel">إلغاء</button></div></form>`;
+$('#back').classList.add('show');$('#cancel').onclick=()=>$('#back').classList.remove('show');
+$('#entry').onsubmit=e=>{e.preventDefault();let x=Object.fromEntries(new FormData(e.target));if(type==='task'){if(item.id)Object.assign(item,x);else db.tasks.push({id:crypto.randomUUID(),...x,done:false})}if(type==='habit'){if(item.id)Object.assign(item,x);else db.habits.push({id:crypto.randomUUID(),...x,logs:[]})}if(type==='note'){if(item.id)Object.assign(item,x);else db.notes.push({id:crypto.randomUUID(),...x,date:today()})}if(type==='reward'){x.cost=+x.cost;if(item.id)Object.assign(item,x);else db.rewards.push({id:crypto.randomUUID(),...x})}save();$('#back').classList.remove('show');render()};
+}
+document.addEventListener('click',e=>{
+let b=e.target.closest('button');if(!b)return;
+if(b.dataset.tab){tab=b.dataset.tab;render()}
+if(b.dataset.add)openForm(b.dataset.add);
+if(b.dataset.editTask){let t=db.tasks.find(x=>x.id===b.dataset.editTask);openForm('task',t)}
+if(b.dataset.editNote){let n=db.notes.find(x=>x.id===b.dataset.editNote);openForm('note',n)}
+if(b.dataset.redeem){let r=db.rewards.find(x=>x.id===b.dataset.redeem);if(r&&db.points>=r.cost&&confirm('استبدال النقاط بهذه المكافأة؟')){db.points-=r.cost;save();render()}}
+if(b.id==='theme'){db.dark=!db.dark;save();render()}
+});
+document.addEventListener('change',e=>{
+if(e.target.dataset.checkTask){let t=db.tasks.find(x=>x.id===e.target.dataset.checkTask);if(t){t.done=e.target.checked;db.points=Math.max(0,db.points+(t.done?10:-10));save();render()}}
+if(e.target.dataset.checkHabit){let h=db.habits.find(x=>x.id===e.target.dataset.checkHabit);if(h){h.logs=h.logs||[];let i=h.logs.indexOf(today());if(e.target.checked&&i<0){h.logs.push(today());db.points+=5}else if(!e.target.checked&&i>=0){h.logs.splice(i,1);db.points=Math.max(0,db.points-5)}save();render()}}
+});
+$('#back').addEventListener('click',e=>{if(e.target.id==='back')$('#back').classList.remove('show')});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('#install').hidden=false});
+$('#install').addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('#install').hidden=true});
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
+</script>
+</body></html>
